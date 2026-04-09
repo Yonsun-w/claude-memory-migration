@@ -56,8 +56,8 @@
 >
 > ✅ 完成！~/claude-export-20260409-155823.tar.gz (1.2GB)
 >
-> 💡 提示：已自动上传到您的 iCloud
-> 💡 压缩包已加密，密码：您的生日倒序
+> 💡 提示：已自动保存到桌面
+> 💡 建议：复制到U盘后立即删除本地文件
 > ```
 >
 > 4:06 PM，小李拔下 U 盘，关上电脑，端起自己的马克杯。
@@ -70,7 +70,7 @@
 >
 > 7:32 PM，家里。新 MacBook 开箱，第一件事：
 >
-> ```
+> ```bash
 > tar -xzf claude-export-20260409-155823.tar.gz
 > cd claude-export-20260409-155823
 > ./claude-unified-migration.sh import
@@ -140,6 +140,38 @@
 
 ---
 
+## 🎯 核心原理
+
+### 传统迁移的问题
+```
+旧电脑项目路径: /Users/olduser/workspace/my-project
+                              ↓
+新电脑可能是:    /Users/newuser/projects/my-project
+                              ↓
+              Claude 找不到原路径，记忆全丢失！❌
+```
+
+### 本工具的解决方案
+```
+旧电脑任意路径: /Users/olduser/workspace/my-project
+                /Users/olduser/Documents/side-project
+                /Users/olduser/company/work-project
+                              ↓
+           统一导出，生成路径映射表
+                              ↓
+新电脑统一管理: ~/.claude-projects/
+                ├── my-project/          ← 友好命名
+                ├── side-project/        ← 包含所有对话历史
+                └── work-project/        ← 包含项目记忆
+                              ↓
+     可选：符号链接到真实项目目录
+~/.claude-projects/my-project → ~/new-workspace/my-project
+                              ↓
+              Claude 无缝识别，记忆完整恢复！✅
+```
+
+---
+
 ## ✨ 核心功能
 
 ### 1. 🚀 5分钟完整打包
@@ -154,12 +186,18 @@
 
 ### 2. 🎯 智能路径映射
 不用担心新电脑路径不一样！
-```
-旧电脑: /Users/oldme/projects/my-startup
-新电脑: /Users/newme/work/new-company
-       ↓
-统一管理: ~/.claude-projects/my-startup
-```
+
+**旧电脑的项目可能在**：
+- `/Users/username/workspace/project-a`
+- `/Users/username/Documents/project-b`
+- `/Users/username/company/repos/project-c`
+
+**新电脑统一管理在**：
+- `~/.claude-projects/project-a`
+- `~/.claude-projects/project-b`
+- `~/.claude-projects/project-c`
+
+**Claude 自动识别，路径完全独立！**
 
 ### 3. 🧠 零损失记忆恢复
 ```bash
@@ -173,11 +211,20 @@
 
 ### 4. 🔗 符号链接黑科技
 ```bash
-# 链接到真实项目目录
+# 可选：链接到新电脑的真实项目目录
 /claude-memory link
 
-# Claude 同时记住统一目录和真实路径
-~/.claude-projects/my-startup → ~/projects/my-startup
+# 交互示例
+📁 project-a
+   原路径: /Users/旧电脑用户名/workspace/project-a
+   统一路径: ~/.claude-projects/project-a
+
+   检测到真实路径: ~/new-workspace/project-a
+   创建符号链接? (Y/n): y
+   ✓ 已创建符号链接
+
+# 最终效果
+~/.claude-projects/project-a → ~/new-workspace/project-a
 ```
 
 ---
@@ -186,23 +233,19 @@
 
 ### 方式 1: NPM（推荐）
 ```bash
-# 使用 reskill
-reskill install @yonsun/claude-memory-migration
-
-# 或直接用 npm
 npm install -g @yonsun/claude-memory-migration
 ```
 
-### 方式 2: 一键安装脚本
-```bash
-curl -fsSL https://raw.githubusercontent.com/Yonsun-w/claude-memory-migration/main/install.sh | bash
-```
-
-### 方式 3: 手动安装
+### 方式 2: 手动安装
 ```bash
 git clone https://github.com/Yonsun-w/claude-memory-migration.git
 cd claude-memory-migration
 cp -r . ~/.claude/skills/claude-memory-migration/
+```
+
+### 方式 3: 通过 reskill
+```bash
+reskill install @yonsun/claude-memory-migration
 ```
 
 ---
@@ -226,14 +269,17 @@ cp -r . ~/.claude/skills/claude-memory-migration/
 📋 扫描项目目录...
 ===========================================================
 
-🧠 my-startup (15 会话, 256KB)
-   → 有项目记忆，必须带走！
+🧠 项目: microservice-refactor
+   原路径: /Users/旧电脑用户名/workspace/microservice-refactor
+   会话: 15, 大小: 256KB, 有项目记忆 ✓
 
-💬 leetcode-practice (42 会话, 1.2MB)
-   → 面试要用的算法题！
+💬 项目: leetcode-practice
+   原路径: /Users/旧电脑用户名/Documents/leetcode-practice
+   会话: 42, 大小: 1.2MB
 
-🔥 secret-side-project (8 会话, 128KB)
-   → 你懂的...
+🔥 项目: side-hustle
+   原路径: /Users/旧电脑用户名/projects/side-hustle
+   会话: 8, 大小: 128KB
 
 ===========================================================
 ✓ 找到 58 个项目，将迁移 35 个
@@ -259,18 +305,24 @@ cd claude-export-*
 
 **输出示例**：
 ```
+原用户: 旧电脑用户名
+新用户: 新电脑用户名
+统一目录: ~/.claude-projects/
+
 🔄 重组项目结构
 ===========================================================
 
-🧠 my-startup
-   统一路径: ~/.claude-projects/my-startup
+🧠 microservice-refactor
+   原路径: /Users/旧电脑用户名/workspace/microservice-refactor
+   统一路径: ~/.claude-projects/microservice-refactor
 
 📁 leetcode-practice
+   原路径: /Users/旧电脑用户名/Documents/leetcode-practice
    统一路径: ~/.claude-projects/leetcode-practice
 
 ===========================================================
 ✓ 成功迁移 35 个项目
-🎉 所有记忆已恢复！
+🎉 所有记忆已恢复！Claude 已识别所有项目
 ===========================================================
 ```
 
@@ -283,13 +335,29 @@ cd claude-export-*
 
 **交互示例**：
 ```
-📁 my-startup
-   原路径: /Users/oldme/projects/my-startup
-   统一路径: ~/.claude-projects/my-startup
+📁 microservice-refactor
+   原路径: /Users/旧电脑用户名/workspace/microservice-refactor
+   统一路径: ~/.claude-projects/microservice-refactor
 
-   ✓ 检测到真实路径: /Users/newme/work/my-startup
-   创建链接? (Y/n): y
+   建议路径: ~/workspace/microservice-refactor
+   ✓ 检测到真实路径存在
+   创建符号链接? (Y/n): y
    ✓ 已创建符号链接
+
+📁 leetcode-practice
+   原路径: /Users/旧电脑用户名/Documents/leetcode-practice
+   统一路径: ~/.claude-projects/leetcode-practice
+
+   建议路径: ~/Documents/leetcode-practice
+   ⚠ 真实路径不存在
+   输入自定义路径（留空跳过）: ~/practice/leetcode
+   ✓ 已创建符号链接到: ~/practice/leetcode
+```
+
+**最终效果**：
+```bash
+~/.claude-projects/microservice-refactor → ~/workspace/microservice-refactor
+~/.claude-projects/leetcode-practice → ~/practice/leetcode
 ```
 
 ---
@@ -342,18 +410,23 @@ cd claude-export-*
 总大小: 3.2 GB
 使用天数: 847 天
 
-📁 按类别统计
+📁 按类别统计（按旧电脑的目录结构分类）
 ------------------------------------------------------------
-工作项目              18个   145会话   1.8 GB
-个人项目              12个    56会话   0.9 GB
-算法练习              15个    21会话   0.3 GB
-临时测试              13个    12会话   0.2 GB
+workspace目录下的项目   18个   145会话   1.8 GB
+Documents目录下的项目   12个    56会话   0.9 GB
+临时项目目录           15个    21会话   0.3 GB
+其他目录              13个    12会话   0.2 GB
 
-🔝 Top 10 最活跃项目
+🔝 Top 10 最活跃项目（按对话次数）
 ------------------------------------------------------------
  1. [856.2 MB]  78会话  microservice-refactor
+    原路径: /Users/旧电脑用户名/workspace/microservice-refactor
+
  2. [423.1 MB]  42会话  leetcode-daily
+    原路径: /Users/旧电脑用户名/Documents/leetcode-daily
+
  3. [312.7 MB]  31会话  personal-blog
+    原路径: /Users/旧电脑用户名/projects/personal-blog
 ```
 
 ---
@@ -363,7 +436,7 @@ cd claude-export-*
 ### ✅ 我们做的
 - 🔒 自动过滤临时目录（`/tmp/`、`/private/var/`）
 - 🗑️ 跳过无价值文件（< 1KB 且无历史）
-- 📋 生成完整迁移记录（可追溯）
+- 📋 生成完整迁移记录（可追溯原路径）
 - 💾 导入前自动备份现有配置
 
 ### ⚠️ 你应该做的
@@ -377,16 +450,22 @@ cd claude-export-*
 ## 🤔 常见问题
 
 ### Q: 会不会把公司代码也打包了？
-**A**: ❌ 不会！这个工具只打包 `~/.claude/` 目录，不碰项目源代码。
+**A**: ❌ 不会！这个工具只打包 `~/.claude/` 目录（Claude 的记忆），不碰项目源代码。
+
+### Q: 新电脑的项目路径不一样怎么办？
+**A**: 这正是这个工具的核心功能！
+
+**举例说明**：
+- 旧电脑：`/Users/olduser/workspace/my-project`
+- 新电脑：`/Users/newuser/new-workspace/my-project`
+
+导入后会统一管理在 `~/.claude-projects/my-project`，然后你可以用符号链接指向真实路径。Claude 会自动识别！
 
 ### Q: 压缩包有多大？
 **A**: 取决于你的使用量。一般：
 - 轻度用户（< 6 个月）: 100-500 MB
 - 中度用户（6-12 个月）: 500 MB - 2 GB
 - 重度用户（> 1 年）: 2-10 GB
-
-### Q: 新电脑路径不一样怎么办？
-**A**: 这正是这个工具的核心功能！统一管理在 `~/.claude-projects/`，然后用符号链接。
 
 ### Q: 会泄露公司机密吗？
 **A**: ⚠️ 对话历史里可能包含代码片段、讨论内容。如果担心，导出后手动检查 `.jsonl` 文件。
@@ -404,15 +483,7 @@ cd claude-export-*
 0 2 * * 0 ~/.claude/skills/claude-memory-migration/scripts/migration-core.sh export
 ```
 
-### 场景 2: 选择性导出
-```bash
-# 只导出特定项目（手动修改 project-mapping.json）
-/claude-memory export
-# 编辑 export-dir/project-mapping.json，删除不需要的项目
-tar -czf export-custom.tar.gz export-dir/
-```
-
-### 场景 3: 多机同步
+### 场景 2: 多机同步
 ```bash
 # 机器 A
 /claude-memory export
@@ -422,7 +493,7 @@ scp export.tar.gz user@machine-b:~/
 /claude-memory import
 ```
 
-### 场景 4: 云端备份
+### 场景 3: 云端备份
 ```bash
 # 导出后自动上传
 /claude-memory export
