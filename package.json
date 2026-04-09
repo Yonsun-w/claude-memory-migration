@@ -20,12 +20,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yonsun/claude-memory-migration.git"
+    "url": "https://github.com/Yonsun-w/claude-memory-migration.git"
   },
   "bugs": {
-    "url": "https://github.com/yonsun/claude-memory-migration/issues"
+    "url": "https://github.com/Yonsun-w/claude-memory-migration/issues"
   },
-  "homepage": "https://github.com/yonsun/claude-memory-migration#readme",
+  "homepage": "https://github.com/Yonsun-w/claude-memory-migration#readme",
   "claudeCode": {
     "targetAgents": [
       "claude-code"

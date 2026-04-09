@@ -25,7 +25,7 @@ npm install -g @yonsun/claude-memory-migration
 ### 手动安装
 
 ```bash
-git clone https://github.com/yonsun/claude-memory-migration.git
+git clone https://github.com/Yonsun-w/claude-memory-migration.git
 cd claude-memory-migration
 cp -r . ~/.claude/skills/claude-memory-migration/
 ```
@@ -210,7 +210,7 @@ rm -rf ~/.claude/projects
 欢迎提交 Issue 和 PR！
 
 ```bash
-git clone https://github.com/yonsun/claude-memory-migration.git
+git clone https://github.com/Yonsun-w/claude-memory-migration.git
 cd claude-memory-migration
 # 进行修改...
 git commit -m "feat: add new feature"
@@ -228,7 +228,7 @@ MIT License - 详见 [LICENSE](LICENSE)
 ## 📮 联系方式
 
 - GitHub: [@yonsun](https://github.com/yonsun)
-- Issues: [GitHub Issues](https://github.com/yonsun/claude-memory-migration/issues)
+- Issues: [GitHub Issues](https://github.com/Yonsun-w/claude-memory-migration/issues)
 
 ## 🔗 相关链接
 
