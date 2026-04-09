@@ -1,6 +1,6 @@
 {
   "name": "claude-memory-migration",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Claude Code 统一记忆迁移工具。支持导出旧电脑的所有记忆和配置，在新电脑统一管理并恢复。解决路径依赖问题，实现无缝迁移。",
   "main": "SKILL.md",
   "triggers": [

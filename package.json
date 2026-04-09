@@ -1,6 +1,6 @@
 {
   "name": "@yonsun/claude-memory-migration",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Claude Code unified memory migration tool. Export all memories and configs from old computer, restore them on new computer with unified project management. Solve path dependency issues for seamless migration.",
   "main": "SKILL.md",
   "keywords": [
