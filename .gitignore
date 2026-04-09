@@ -1,0 +1,11 @@
+node_modules/
+*.log
+*.tar.gz
+.DS_Store
+.vscode/
+*.swp
+*~
+.idea/
+claude-export-*/
+test-exports/
+.author-card-shown.json
